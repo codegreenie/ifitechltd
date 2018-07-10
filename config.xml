@@ -13,7 +13,7 @@
     <preference name="orientation" value="portrait" />
     <preference name="android-build-tool" value="gradle" />
     <preference name="phonegap-version" value="cli-7.1.0" />
-    <preference name="StatusBarBackgroundColor" value="#0c1e3e;" />
+    <preference name="StatusBarBackgroundColor" value="#0c1e3e" />
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="ShowSplashScreenSpinner" value="false" />
     <platform name="android">
