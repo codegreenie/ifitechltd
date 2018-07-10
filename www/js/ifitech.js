@@ -57,7 +57,7 @@ myApp.onPageInit('mainstart', function(page){
 
       mainView.router.loadPage("dashboard.html");
 
-    },1000);
+    },7000);
 
 });
 
