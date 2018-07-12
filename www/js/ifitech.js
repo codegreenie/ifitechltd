@@ -57,21 +57,31 @@ myApp.onPageInit('mainstart', function(page){
 
       mainView.router.loadPage("dashboard.html");
 
-    },7000);
+    },1000);
 
 });
 
 
 var loadProperty;
 myApp.onPageInit('dashboard', function(page){
+$$(".nylon").show();
 
-  
+   $$("#account-check-in").on("click", function(){
+
+    $$(".nylon").show();
+
+
+        $$(".nylon").hide();
+        mainView.router.loadPage("login.html");
+     
+
+  });
 
      
      $$.post("http://ifitechltd.com/app/pull_properties.php",
         
             function(data, status, xhr){
-              
+              $$(".nylon").hide();
               $$("#page-content").html(data);
             }
             ,
@@ -111,6 +121,9 @@ myApp.onPageInit('dashboard', function(page){
 
 
 myApp.onPageInit('property', function(page){
+
+
+
 
 
     var prop = window.localStorage.getItem("thisProperty");
@@ -209,3 +222,235 @@ myApp.onPageInit('property', function(page){
 
 
 
+
+
+
+
+
+
+myApp.onPageInit('signup', function(page){
+
+
+  $$("#register-user").on('click', function(e){
+
+          $$('form.ajax-submit').trigger('submit');
+
+      });
+
+
+
+        $$('form.ajax-submit').on('form:beforesend', function (e) {
+            $$(".nylon").show();
+        });
+        
+
+        $$('form.ajax-submit').on('form:error', function (e) {
+            
+            $$(".nylon").hide();
+            var xcode = e.detail.data;
+            myApp.alert("An error has occured, try again later");
+
+          });
+              
+
+        $$('form.ajax-submit').on('form:success', function (e) {
+            var xhr = e.detail.xhr; // actual XHR object
+           
+            var data = e.detail.data; // Ajax response from action file
+            $$(".nylon").hide();
+
+            var splitData = data.split(" ");            
+            if(splitData[0] == "success"){
+                
+                window.localStorage.setItem("myCheckIn", data[1]);
+                if(splitData[2] == "consultant"){
+                  mainView.router.loadPage("consultant.html");
+                }
+                else{
+                  mainView.router.loadPage("client.html");
+                }
+                
+          }
+
+          else{
+            
+            $$(".nylon").hide();
+            myApp.alert(data);
+          }
+
+            
+
+          });
+            
+
+
+
+
+
+});
+
+
+
+
+
+
+myApp.onPageInit('login', function(page){
+
+
+  $$("#login-user").on('click', function(e){
+
+          $$('form.ajax-submit').trigger('submit');
+
+      });
+
+
+
+        $$('form.ajax-submit').on('form:beforesend', function (e) {
+            $$(".nylon").show();
+        });
+        
+
+        $$('form.ajax-submit').on('form:error', function (e) {
+            
+            $$(".nylon").hide();
+            var xcode = e.detail.data;
+            myApp.alert("An error has occured, try again later");
+
+          });
+              
+
+        $$('form.ajax-submit').on('form:success', function (e) {
+            var xhr = e.detail.xhr; // actual XHR object
+           
+            var data = e.detail.data; // Ajax response from action file
+            $$(".nylon").hide();
+
+                
+                var splitData = data.split(" ");
+                
+                if(splitData[0] == "success"){
+
+                  window.localStorage.setItem("myCheckIn", splitData[2]);
+                  mainView.router.loadPage("consultant.html");
+                }
+                else{
+                  myApp.alert("Invalid Username / Password");
+                }
+         
+            
+
+          });
+            
+
+
+
+
+
+});
+
+
+
+
+
+
+myApp.onPageInit('consultant', function(page){
+
+  $$(".nylon").show();
+
+  var theSerial = window.localStorage.getItem("myCheckIn");
+
+
+  //Grab fields from the server
+  $$.getJSON("http://ifitechltd.com/portal/includes/load_consultant_fields.php",
+
+            {"my_serial" : theSerial},
+        
+            function(data, status, xhr){
+              
+               $$("#consultant-title").val(data.title);
+               $$("#consultant-surname").val(data.surname);
+               $$("#consultant-othernames").val(data.othernames);
+               $$("#consultant-phone").val(data.phone);
+               $$("#consultant-email").val(data.mail);
+               $$("#consultant-occupation").val(data.occupation);
+               $$("#consultant-postal-address").val(data.postal_address);
+               $$("#consultant-residential-address").val(data.residential_address);
+               $$("#consultant-employer-address").val(data.employer_address);
+
+
+                $$(".nylon").hide();
+            }
+            ,
+            function(){
+
+              myApp.alert("Error occured fetching projects");
+          
+            });
+
+
+
+
+  
+  $$("#consultant-serial").val(theSerial);
+
+  
+/*
+var bankRoad = ['Diamond Bank', 'Zenith Bank', 'United Bank Of Afica', 'Guarantee Trust Bank', 'Access Bank Plc', 'First Bank Nigeria', 'Ecobank', 'Fidelity Bank', 'First City Monument Bank', 'Heritage Bank', 'ASO Savings and Loans', 'Coronation Merchant Bank', 'FBN Mortgages Limited', 'Fortis Microfinance Bank', 'FSDH Merchant Bank', 'Imperial Homes Mortgage Bank', 'Jaiz Bank', 'Jubilee Life Mortgage Bank', 'Keystone Bank', 'New Prudential Bank', 'Nigeria International Bank(CITIGROUP)', 'NPF Microfinance Bank', 'Omoluabi Savings and Loans Plc', 'Page MFBank', 'Parallex MFB', 'Safetrust Mortgage Bank', 'Skye Bank Plc', 'Stanbic IBTC Bank', 'Standard Chattered Bank', 'SunTrust Bank', 'Trustbond Mortgage Bank', 'Union Bank of Nigeria', 'Unity Bank Plc', 'VFD Microfinance Bank Plc', 'Wema Bank Plc', 'Sterling Bank'];
+            
+            bankRoad.sort();
+            
+            for(qlx = 0; qlx < bankRoad.length; qlx++){
+              
+              $$("#consultant-bank-name").append($$('<option value=\'' + bankRoad[qlx] + '\'>' + bankRoad[qlx] + '</option>'));
+            }*/
+
+            
+
+      $$("#update-consultant-form").on('click', function(e){
+
+          $$('form.ajax-submit').trigger('submit');
+
+      });
+
+
+
+        $$('form.ajax-submit').on('form:beforesend', function (e) {
+            $$(".nylon").show();
+        });
+        
+
+        $$('form.ajax-submit').on('form:error', function (e) {
+            
+            $$(".nylon").hide();
+            var xcode = e.detail.data;
+            myApp.alert("An error has occured, try again later");
+
+          });
+              
+
+        $$('form.ajax-submit').on('form:success', function (e) {
+            var xhr = e.detail.xhr; // actual XHR object
+           
+            var data = e.detail.data; // Ajax response from action file
+            $$(".nylon").hide();
+
+            
+              myApp.alert("Update Successful");
+
+            
+
+          });
+
+
+
+        $$("#logout-btn").on("click", function(){
+
+          $$(".nylon").show();
+          window.localStorage.removeItem("myCheckIn");
+          $$(".nylon").hide();
+          mainView.router.loadPage("dashboard.html");
+
+        })
+            
+
+});
