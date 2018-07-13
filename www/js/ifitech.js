@@ -57,7 +57,7 @@ myApp.onPageInit('mainstart', function(page){
 
       mainView.router.loadPage("dashboard.html");
 
-    },1000);
+    },7000);
 
 });
 
@@ -331,7 +331,12 @@ myApp.onPageInit('login', function(page){
                 if(splitData[0] == "success"){
 
                   window.localStorage.setItem("myCheckIn", splitData[2]);
-                  mainView.router.loadPage("consultant.html");
+                  if(splitData[1] == "consultant"){
+                    mainView.router.loadPage("consultant.html");
+                  }
+                  else{
+                    mainView.router.loadPage("client.html");
+                  }
                 }
                 else{
                   myApp.alert("Invalid Username / Password");
@@ -394,19 +399,109 @@ myApp.onPageInit('consultant', function(page){
   $$("#consultant-serial").val(theSerial);
 
   
-/*
-var bankRoad = ['Diamond Bank', 'Zenith Bank', 'United Bank Of Afica', 'Guarantee Trust Bank', 'Access Bank Plc', 'First Bank Nigeria', 'Ecobank', 'Fidelity Bank', 'First City Monument Bank', 'Heritage Bank', 'ASO Savings and Loans', 'Coronation Merchant Bank', 'FBN Mortgages Limited', 'Fortis Microfinance Bank', 'FSDH Merchant Bank', 'Imperial Homes Mortgage Bank', 'Jaiz Bank', 'Jubilee Life Mortgage Bank', 'Keystone Bank', 'New Prudential Bank', 'Nigeria International Bank(CITIGROUP)', 'NPF Microfinance Bank', 'Omoluabi Savings and Loans Plc', 'Page MFBank', 'Parallex MFB', 'Safetrust Mortgage Bank', 'Skye Bank Plc', 'Stanbic IBTC Bank', 'Standard Chattered Bank', 'SunTrust Bank', 'Trustbond Mortgage Bank', 'Union Bank of Nigeria', 'Unity Bank Plc', 'VFD Microfinance Bank Plc', 'Wema Bank Plc', 'Sterling Bank'];
-            
-            bankRoad.sort();
-            
-            for(qlx = 0; qlx < bankRoad.length; qlx++){
-              
-              $$("#consultant-bank-name").append($$('<option value=\'' + bankRoad[qlx] + '\'>' + bankRoad[qlx] + '</option>'));
-            }*/
-
-            
+           
 
       $$("#update-consultant-form").on('click', function(e){
+
+          $$('form.ajax-submit').trigger('submit');
+
+      });
+
+
+
+        $$('form.ajax-submit').on('form:beforesend', function (e) {
+            $$(".nylon").show();
+        });
+        
+
+        $$('form.ajax-submit').on('form:error', function (e) {
+            
+            $$(".nylon").hide();
+            var xcode = e.detail.data;
+            myApp.alert("An error has occured, try again later");
+
+          });
+              
+
+        $$('form.ajax-submit').on('form:success', function (e) {
+            var xhr = e.detail.xhr; // actual XHR object
+           
+            var data = e.detail.data; // Ajax response from action file
+            $$(".nylon").hide();
+
+            
+              myApp.alert("Update Successful");
+
+            
+
+          });
+
+
+
+        $$("#logout-btn").on("click", function(){
+
+          $$(".nylon").show();
+          window.localStorage.removeItem("myCheckIn");
+          $$(".nylon").hide();
+          mainView.router.loadPage("dashboard.html");
+
+        })
+            
+
+});
+
+
+
+
+
+
+
+myApp.onPageInit('client', function(page){
+
+  $$(".nylon").show();
+
+  var theSerial = window.localStorage.getItem("myCheckIn");
+  
+
+
+  //Grab fields from the server
+  $$.getJSON("http://ifitechltd.com/portal/includes/load_client_fields.php",
+
+            {"my_serial" : theSerial},
+        
+            function(data, status, xhr){
+              
+               $$("#client-fullname").val(data.full_name);
+               $$("#client-contact-person").val(data.contact_person);
+               $$("#client-client-phone").val(data.othernames);
+               $$("#client-phone").val(data.phone);
+               $$("#client-email").val(data.email);
+               $$("#client-occupation").val(data.occupation);
+               $$("#client-mailing-address").val(data.mailing_address);
+               $$("#client-current-employer").val(data.current_employer);
+               $$("#client-employer-mailing-address").val(data.employer_mailing_address);
+               $$("#client-nationality").val(data.nationality);
+
+
+                $$(".nylon").hide();
+            }
+            ,
+            function(){
+
+              myApp.alert("Error occured fetching projects");
+          
+            });
+
+
+
+
+  
+  $$("#client-serial").val(theSerial);
+
+  
+           
+
+      $$("#update-client-form").on('click', function(e){
 
           $$('form.ajax-submit').trigger('submit');
 
