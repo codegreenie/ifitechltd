@@ -296,6 +296,12 @@ myApp.onPageInit('signup', function(page){
 
 myApp.onPageInit('login', function(page){
 
+  $$("#signup-btn").on('click', function(e){
+
+          window.open("http://ifitechltd.com/portal");
+
+      });
+
 
   $$("#login-user").on('click', function(e){
 
