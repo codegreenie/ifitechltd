@@ -57,14 +57,14 @@ myApp.onPageInit('mainstart', function(page){
 
       mainView.router.loadPage("dashboard.html");
 
-    },7000);
+    },1000);
 
 });
 
 
 var loadProperty;
 myApp.onPageInit('dashboard', function(page){
-$$(".nylon").show();
+// $$(".nylon").show();
 
    $$("#account-check-in").on("click", function(){
 
@@ -262,8 +262,8 @@ myApp.onPageInit('signup', function(page){
             var splitData = data.split(" ");            
             if(splitData[0] == "success"){
                 
-                window.localStorage.setItem("myCheckIn", data[1]);
-                if(splitData[2] == "consultant"){
+                
+                if(splitData[2] == "Consultant"){
                   mainView.router.loadPage("consultant.html");
                 }
                 else{
@@ -296,11 +296,6 @@ myApp.onPageInit('signup', function(page){
 
 myApp.onPageInit('login', function(page){
 
-  $$("#signup-btn").on('click', function(e){
-
-          window.open("http://ifitechltd.com/portal");
-
-      });
 
 
   $$("#login-user").on('click', function(e){
