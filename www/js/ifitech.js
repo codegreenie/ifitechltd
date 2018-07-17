@@ -13,7 +13,7 @@ var myApp = new Framework7({
 var $$ = Dom7;
 
 
-var fireUpPayments;
+
 document.addEventListener("deviceready", deviceIsReady, false);
 
 
@@ -23,17 +23,7 @@ document.addEventListener("backbutton", trapBackButton, false);
 
   window.open = cordova.InAppBrowser.open;
 
-  fireUpPayments = function(thePaymentUrl){
-
-    var ref = cordova.InAppBrowser.open(thePaymentUrl, '_blank', 'location=yes');
-    ref.addEventListener('exit', exitInappBrowser);
-  }
-
-  function exitInappBrowser(){
-    
-      mainView.router.loadPage("dashboard.html");
-  }
-
+  
 }
 
 
@@ -64,9 +54,9 @@ myApp.onPageInit('mainstart', function(page){
 
 var loadProperty;
 myApp.onPageInit('dashboard', function(page){
-// $$(".nylon").show();
+$$(".nylon").show();
 
-   $$("#account-check-in").on("click", function(){
+   /*$$("#account-check-in").on("click", function(){
 
     $$(".nylon").show();
 
@@ -75,7 +65,7 @@ myApp.onPageInit('dashboard', function(page){
         mainView.router.loadPage("login.html");
      
 
-  });
+  });*/
 
      
      $$.post("http://ifitechltd.com/app/pull_properties.php",
@@ -87,6 +77,7 @@ myApp.onPageInit('dashboard', function(page){
             ,
             function(){
 
+              $$(".nylon").hide();
               myApp.alert("Error occured fetching projects");
           
             });
@@ -121,6 +112,17 @@ myApp.onPageInit('dashboard', function(page){
 
 
 myApp.onPageInit('property', function(page){
+
+  fireUpPayments = function(thePaymentUrl){
+
+    var ref = window.open(thePaymentUrl, '_blank', 'location=yes');
+    ref.addEventListener('exit', exitInappBrowser);
+  }
+
+  function exitInappBrowser(){
+    
+      mainView.router.loadPage("dashboard.html");
+  }
 
 
 
@@ -233,7 +235,7 @@ myApp.onPageInit('signup', function(page){
 
   $$("#register-user").on('click', function(e){
 
-          $$('form.ajax-submit').trigger('submit');
+          $$('#registration-form').trigger('submit');
 
       });
 
@@ -258,17 +260,19 @@ myApp.onPageInit('signup', function(page){
            
             var data = e.detail.data; // Ajax response from action file
             $$(".nylon").hide();
-
+            
             var splitData = data.split(" ");            
             if(splitData[0] == "success"){
                 
+                mainView.router.loadPage("dashboard.html");
+                window.open("http://ifitechltd.com/portal/")
                 
-                if(splitData[2] == "Consultant"){
+                /*if(splitData[2] == "Consultant"){
                   mainView.router.loadPage("consultant.html");
                 }
                 else{
                   mainView.router.loadPage("client.html");
-                }
+                }*/
                 
           }
 
