@@ -56,16 +56,10 @@ var loadProperty;
 myApp.onPageInit('dashboard', function(page){
 $$(".nylon").show();
 
-   /*$$("#account-check-in").on("click", function(){
+   $$("#login-btn").on("click", function(){
 
-    $$(".nylon").show();
-
-
-        $$(".nylon").hide();
-        mainView.router.loadPage("login.html");
-     
-
-  });*/
+        window.open("http://ifitechltd.com/portal/");
+  });
 
      
      $$.post("http://ifitechltd.com/app/pull_properties.php",
